@@ -3,6 +3,8 @@ package cavalcante.deVirtual_store.virtual_store1.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +19,10 @@ public abstract class  Pessoa {
     private String nome;
     private String email;
     private String telefone;
+
+
+    @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Endereco> enderecos = new ArrayList<Endereco>();
 
 
     public long getId() {
@@ -51,6 +57,13 @@ public abstract class  Pessoa {
         this.telefone = telefone;
     }
 
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
 
     @Override
     public boolean equals(Object o) {
