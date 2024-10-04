@@ -26,7 +26,7 @@ public class Usuario implements UserDetails, Serializable {
 
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable (name = "usuarios_acesso",uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","acesso_id"},name = "unique_acesso_user"),
+    @JoinTable (name = "tb_usuarios_acesso",uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","acesso_id"},name = "unique_acesso_user"),
        joinColumns        = @JoinColumn(name = "usuario_id", referencedColumnName = "id", table = "usuario",unique = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "usuario_fk"))
       ,inverseJoinColumns = @JoinColumn(name = "acesso_id" , referencedColumnName = "id", table = "acesso", unique = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "acesso_fk"))
                )
