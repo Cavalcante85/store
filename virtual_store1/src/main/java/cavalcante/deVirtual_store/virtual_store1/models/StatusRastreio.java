@@ -7,7 +7,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "status_rastreio")
+@Table(name = "tb_status_rastreio")
 public class StatusRastreio implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,6 +20,10 @@ public class StatusRastreio implements Serializable {
     private String cidade;
     private String estado;
     private String status;
+
+    @ManyToOne(targetEntity = VendaCompraLoja.class)
+    @JoinColumn(name = "venda_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT,name = "venda_fk"))
+    private VendaCompraLoja venda;
 
 
    public StatusRastreio() {
@@ -66,6 +70,14 @@ public class StatusRastreio implements Serializable {
         this.status = status;
     }
 
+    public VendaCompraLoja getVenda() {
+        return venda;
+    }
+
+    public void setVenda(VendaCompraLoja venda) {
+        this.venda = venda;
+    }
+
     @Override
     public String toString() {
         return "StatusRastreio{" +
@@ -74,6 +86,7 @@ public class StatusRastreio implements Serializable {
                 ", cidade='" + cidade + '\'' +
                 ", estado='" + estado + '\'' +
                 ", status='" + status + '\'' +
+                ", venda=" + venda +
                 '}';
     }
 
