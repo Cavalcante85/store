@@ -19,6 +19,7 @@ public class ContaPagar implements Serializable {
 
     private String descricao;
 
+    @Column(nullable = false)
     private BigDecimal valorTotal;
 
     @Temporal(TemporalType.DATE)

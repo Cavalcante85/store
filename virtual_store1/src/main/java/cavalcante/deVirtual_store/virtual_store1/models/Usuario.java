@@ -19,7 +19,9 @@ public class Usuario implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @Column(nullable = false)
     private String login;
+    @Column(nullable = false)
     private String senha;
     @Temporal(TemporalType.DATE)
     private Date dataSenha;

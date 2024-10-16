@@ -13,6 +13,7 @@ public class Acesso implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(nullable = false)
     private String descricao;
 
 
