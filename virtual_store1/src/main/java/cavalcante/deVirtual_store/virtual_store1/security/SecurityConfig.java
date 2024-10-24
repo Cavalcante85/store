@@ -11,16 +11,16 @@ import org.springframework.http.HttpMethod;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers(HttpMethod.POST, "/product/**").permitAll() // Ignorar autenticação para esse endpoint
-                                .anyRequest().authenticated() // Proteger todas as outras requisições
+                                .requestMatchers(HttpMethod.POST, "/salvarAcesso/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/deleteAcesso/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable()); // Desabilitar CSRF, se necessário
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
