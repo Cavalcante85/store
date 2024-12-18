@@ -1,5 +1,6 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,10 +14,10 @@ public class Acesso implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String descricao;
 
-
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return this.descricao;
@@ -50,5 +51,14 @@ public class Acesso implements GrantedAuthority {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Acesso{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                '}';
     }
 }

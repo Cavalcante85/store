@@ -1,4 +1,4 @@
-package cavalcante.deVirtual_loja.virtual_loja.models;
+package cavalcante.deVirtual_store.virtual_store1.models;
 
 
 import jakarta.persistence.*;

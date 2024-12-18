@@ -17,7 +17,15 @@ public class PessoaJuridica extends Pessoa {
     private String inscricaoEstadual;
     private String inscricaoMunicipal;
     private String nomeFantasia;
+    private String tipoPessoa;
 
+    public String getTipoPessoa() {
+        return tipoPessoa;
+    }
+
+    public void setTipoPessoa(String tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
+    }
 
     public String getCnpj() {
         return cnpj;

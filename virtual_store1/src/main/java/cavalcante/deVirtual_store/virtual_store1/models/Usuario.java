@@ -19,7 +19,7 @@ public class Usuario implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
     @Column(nullable = false)
     private String senha;
@@ -70,5 +70,46 @@ public class Usuario implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Date getDataSenha() {
+        return dataSenha;
+    }
+
+    public void setDataSenha(Date dataSenha) {
+        this.dataSenha = dataSenha;
+    }
+
+    public List<Acesso> getAcessos() {
+        return acessos;
+    }
+
+    public void setAcessos(List<Acesso> acessos) {
+        this.acessos = acessos;
     }
 }
