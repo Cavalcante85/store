@@ -22,12 +22,25 @@ public class ImplementacaoUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Passando aqui   "+ username + " !!! ");
         Usuario usuario = usuarioRepository.findUserByLogin(username);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuário não encontrado");
+        System.out.println("Passando aqui 2!!!");
+
+        if (usuario == null){
+         throw new UsernameNotFoundException("Usuário nao encontrado!");
         }
-        return usuario;
+        System.out.println("Passando aqui 3!!!");
+
+        // Criando um objeto User (implementa UserDetails) com as informações do usuário
+        return User.builder()
+                .username(usuario.getLogin())
+                .password(usuario.getSenha())
+                .roles("ADMIN") // Substituir por roles reais, se existirem
+                .build();
+
+
     }
+
 }
 
 

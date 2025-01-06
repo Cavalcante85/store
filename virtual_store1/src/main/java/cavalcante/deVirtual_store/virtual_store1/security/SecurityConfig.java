@@ -7,11 +7,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.http.HttpMethod;
 
 @Configuration
@@ -24,51 +23,20 @@ public class SecurityConfig {
     }
 
     @Bean
-  /*
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.POST, "/salvarAcesso/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/deleteAcesso/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/login", "/login/**", "/home").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login").permitAll() // Página de login personalizada
-                        .defaultSuccessUrl("/home", true) // Redirecionamento pós-login
-                )
-
+                .addFilterAt(jsonAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro JSON
                 .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
-
-   */
-
-
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // Desabilita CSRF para facilitar testes REST
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/virtual_store1/login").permitAll() // Permite acesso público ao login
-                        .requestMatchers(HttpMethod.POST, "/salvarAcesso/**").permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/deleteAcesso/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/login", "/login/**", "/home").permitAll()
-                        .anyRequest().authenticated() // Requer autenticação para outras rotas
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // API sem estado
-
-        return http.build();
-    }
-
-
-
-
-
-
-
-
 
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
@@ -87,6 +55,12 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public JsonAuthenticationFilter jsonAuthenticationFilter() throws Exception {
+        JsonAuthenticationFilter filter = new JsonAuthenticationFilter();
+        filter.setAuthenticationManager(authManager(null)); // Configura o AuthenticationManager
+        filter.setFilterProcessesUrl("/login"); // Define o endpoint para o filtro
+        return filter;
+    }
 }
-
-

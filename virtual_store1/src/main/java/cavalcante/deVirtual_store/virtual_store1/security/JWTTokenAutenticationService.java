@@ -7,9 +7,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.filters.CorsFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.Date;
 
@@ -17,6 +21,7 @@ import java.util.Date;
 @Service
 @Component
 public class JWTTokenAutenticationService {
+
 
     // 11 dias em milisegundos
     private static final long EXPIRATION_TIME = 959990000;
@@ -33,6 +38,8 @@ public class JWTTokenAutenticationService {
 
    // Gera o TOKEN
    public void addAuthentication(HttpServletResponse response, String username) throws Exception{
+
+       System.out.println("TESTANDO TOKEN");
 
        String JWT = Jwts.builder()
                .setSubject(username)
@@ -98,4 +105,24 @@ public class JWTTokenAutenticationService {
          }
 
       }
+
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*"); // ou substitua "*" por URLs específicas
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter();
+    }
+
+
+
+
+
+
+
 }

@@ -21,8 +21,10 @@ public class Usuario implements UserDetails, Serializable {
 
     @Column(nullable = false, unique = true)
     private String login;
+
     @Column(nullable = false)
     private String senha;
+
     @Temporal(TemporalType.DATE)
     private Date dataSenha;
 
@@ -111,5 +113,17 @@ public class Usuario implements UserDetails, Serializable {
 
     public void setAcessos(List<Acesso> acessos) {
         this.acessos = acessos;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", senha='" + senha + '\'' +
+                ", dataSenha=" + dataSenha +
+                ", acessos=" + acessos +
+                '}';
     }
 }
