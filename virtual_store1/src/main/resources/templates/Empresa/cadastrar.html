@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Cadastrar Empresa')}">
+<body>
+<div th:replace="~{fragments/header :: content}"></div>
+
+<div class="container mt-4">
+    <h2>Nova Empresa</h2>
+
+    <form th:action="@{/empresa/salvar}" method="post" class="mt-4">
+        <input type="hidden" name="id" th:value="${empresa.id}">
+
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="nome" th:value="${empresa.nome}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" th:value="${empresa.email}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone:</label>
+            <input type="text" class="form-control" id="telefone" name="telefone" th:value="${empresa.telefone}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="cnpj" class="form-label">CNPJ:</label>
+            <input type="text" class="form-control" id="cnpj" name="cnpj" th:value="${empresa.cnpj}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="razao_social" class="form-label">Razão Social:</label>
+            <input type="text" class="form-control" id="razao_social" name="razao_social" th:value="${empresa.razaoSocial}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nome_fantasia" class="form-label">Nome Fantasia:</label>
+            <input type="text" class="form-control" id="nome_fantasia" name="nome_fantasia" th:value="${empresa.nomeFantasia}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoria:</label>
+            <input type="text" class="form-control" id="categoria" name="categoria" th:value="${empresa.categoria}">
+        </div>
+
+        <div class="mb-3">
+            <label for="inscricao_estadual" class="form-label">Inscrição Estadual:</label>
+            <input type="text" class="form-control" id="inscricao_estadual" name="inscricao_estadual" th:value="${empresa.inscricaoEstadual}">
+        </div>
+
+        <div class="mb-3">
+            <label for="inscricao_municipal" class="form-label">Inscrição Municipal:</label>
+            <input type="text" class="form-control" id="inscricao_municipal" name="inscricao_municipal" th:value="${empresa.inscricaoMunicipal}">
+        </div>
+
+        <div class="mb-3">
+            <label for="tipo_pessoa" class="form-label">Tipo Pessoa:</label>
+            <select class="form-control" id="tipo_pessoa" name="tipo_pessoa" required>
+                <option value="">Selecione</option>
+                <option value="JURIDICA" th:selected="${empresa.tipoPessoa == 'JURIDICA'}">Jurídica</option>
+                <option value="FISICA" th:selected="${empresa.tipoPessoa == 'FISICA'}">Física</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo:</label>
+            <input type="text" class="form-control" id="tipo" name="tipo" th:value="${empresa.tipo}">
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Salvar
+        </button>
+        <a th:href="@{/Empresas}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

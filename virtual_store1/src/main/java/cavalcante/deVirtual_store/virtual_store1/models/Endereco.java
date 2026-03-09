@@ -1,6 +1,8 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
 import cavalcante.deVirtual_store.virtual_store1.enums.TipoEnderecoEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -22,12 +24,20 @@ public class Endereco implements Serializable {
     private String uf;
     private String cep;
 
-    @ManyToOne(targetEntity = Pessoa.class)
-    @JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name = "pessoa_fk"))
+    @JsonIgnore
+    @Nullable
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", foreignKey = @ForeignKey(name = "empresa_id_fk"))
+    private Pessoa empresa;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(name = "pessoa_fk"))
     private Pessoa pessoa;
 
     @Enumerated(EnumType.STRING)
     private TipoEnderecoEnum tipo;
+
 
     public long getId() {
         return id;
@@ -109,6 +119,14 @@ public class Endereco implements Serializable {
         this.tipo = tipo;
     }
 
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
+
     public Endereco() {
 
     }
@@ -124,6 +142,7 @@ public class Endereco implements Serializable {
                 ", cidade='" + cidade + '\'' +
                 ", uf='" + uf + '\'' +
                 ", cep='" + cep + '\'' +
+                ", empresa=" + empresa +
                 ", pessoa=" + pessoa +
                 ", tipo=" + tipo +
                 '}';

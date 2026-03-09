@@ -1,5 +1,6 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,10 +30,22 @@ public class Usuario implements UserDetails, Serializable {
     private Date dataSenha;
 
 
+    
+
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "pessoa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
+    private Pessoa pessoa;
+
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
+
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable (name = "tb_usuarios_acesso",uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","acesso_id"},name = "unique_acesso_user"),
-       joinColumns        = @JoinColumn(name = "usuario_id", referencedColumnName = "id", table = "usuario",unique = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "usuario_fk"))
-      ,inverseJoinColumns = @JoinColumn(name = "acesso_id" , referencedColumnName = "id", table = "acesso", unique = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "acesso_fk"))
+       joinColumns        = @JoinColumn(name = "usuario_id", referencedColumnName = "id", table = "tb_usuario",unique = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "usuario_fk"))
+      ,inverseJoinColumns = @JoinColumn(name = "acesso_id" , referencedColumnName = "id", table = "tb_acesso", unique = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "acesso_fk"))
                )
     private List<Acesso> acessos;
 
@@ -115,6 +128,21 @@ public class Usuario implements UserDetails, Serializable {
         this.acessos = acessos;
     }
 
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
 
     @Override
     public String toString() {
@@ -123,6 +151,8 @@ public class Usuario implements UserDetails, Serializable {
                 ", login='" + login + '\'' +
                 ", senha='" + senha + '\'' +
                 ", dataSenha=" + dataSenha +
+                ", pessoa=" + pessoa +
+                ", empresa=" + empresa +
                 ", acessos=" + acessos +
                 '}';
     }

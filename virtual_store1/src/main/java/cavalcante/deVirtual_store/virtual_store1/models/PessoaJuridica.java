@@ -1,14 +1,13 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import cavalcante.deVirtual_store.virtual_store1.enums.TipoPessoaEnum;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_pessoa_juridica")
 //@PrimaryKeyJoinColumn(name = "id")
 public class PessoaJuridica extends Pessoa {
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
 
     private String cnpj;
@@ -18,14 +17,24 @@ public class PessoaJuridica extends Pessoa {
     private String inscricaoMunicipal;
     private String nomeFantasia;
     private String tipoPessoa;
+    @Enumerated(EnumType.STRING)
+    private TipoPessoaEnum tipo;
 
-    public String getTipoPessoa() {
-        return tipoPessoa;
+
+
+
+
+    public TipoPessoaEnum getTipo() {
+        return tipo;
     }
 
-    public void setTipoPessoa(String tipoPessoa) {
-        this.tipoPessoa = tipoPessoa;
+    public void setTipo(TipoPessoaEnum tipo) {
+        this.tipo = tipo;
     }
+
+    public String getTipoPessoa() { return tipoPessoa;}
+
+    public void setTipoPessoa(String tipoPessoa) { this.tipoPessoa = tipoPessoa;}
 
     public String getCnpj() {
         return cnpj;

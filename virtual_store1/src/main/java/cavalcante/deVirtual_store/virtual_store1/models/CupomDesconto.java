@@ -1,5 +1,6 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -23,6 +24,11 @@ public class CupomDesconto implements Serializable {
 
     @Temporal(TemporalType.DATE)
     private Date dt_desc;
+
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
 
     public CupomDesconto() {
 
@@ -68,6 +74,14 @@ public class CupomDesconto implements Serializable {
         this.dt_desc = dt_desc;
     }
 
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
+
     @Override
     public String toString() {
         return "CupomDesconto{" +
@@ -76,6 +90,7 @@ public class CupomDesconto implements Serializable {
                 ", valor_real_desc=" + valor_real_desc +
                 ", valor_perc_desc=" + valor_perc_desc +
                 ", dt_desc=" + dt_desc +
+                ", empresa=" + empresa +
                 '}';
     }
 

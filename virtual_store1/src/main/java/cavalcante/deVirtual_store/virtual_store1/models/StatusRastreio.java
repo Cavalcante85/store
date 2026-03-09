@@ -1,6 +1,8 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -25,10 +27,24 @@ public class StatusRastreio implements Serializable {
     @JoinColumn(name = "venda_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT,name = "venda_fk"))
     private VendaCompraLoja venda;
 
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
 
-   public StatusRastreio() {
+
+
+    public StatusRastreio() {
 
    }
+
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
 
     public long getId() {
         return id;
@@ -87,6 +103,7 @@ public class StatusRastreio implements Serializable {
                 ", estado='" + estado + '\'' +
                 ", status='" + status + '\'' +
                 ", venda=" + venda +
+                ", empresa=" + empresa +
                 '}';
     }
 

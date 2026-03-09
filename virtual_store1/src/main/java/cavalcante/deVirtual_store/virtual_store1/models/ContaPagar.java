@@ -1,6 +1,7 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
 import cavalcante.deVirtual_store.virtual_store1.enums.StatusContaPagarEnum;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -39,9 +40,22 @@ public class ContaPagar implements Serializable {
     @JoinColumn(name = "pessoa_forn_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoaf_fk"))
     private Pessoa pessoa_fornecedor;
 
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
+
 
     public ContaPagar() {
 
+    }
+
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
     }
 
     public long getId() {
@@ -108,7 +122,6 @@ public class ContaPagar implements Serializable {
         this.pessoa_fornecedor = pessoa_fornecedor;
     }
 
-
     @Override
     public String toString() {
         return "ContaPagar{" +
@@ -120,9 +133,9 @@ public class ContaPagar implements Serializable {
                 ", status=" + status +
                 ", pessoa=" + pessoa +
                 ", pessoa_fornecedor=" + pessoa_fornecedor +
+                ", empresa=" + empresa +
                 '}';
     }
-
 
     @Override
     public boolean equals(Object o) {

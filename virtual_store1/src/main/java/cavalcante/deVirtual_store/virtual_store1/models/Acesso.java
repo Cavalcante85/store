@@ -13,7 +13,7 @@ public class Acesso implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
     @Column(nullable = false, unique = true)
     private String descricao;
 
@@ -24,11 +24,11 @@ public class Acesso implements GrantedAuthority {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

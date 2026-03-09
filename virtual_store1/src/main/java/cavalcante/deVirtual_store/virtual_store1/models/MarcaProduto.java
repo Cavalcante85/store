@@ -1,5 +1,6 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,6 +17,11 @@ public class MarcaProduto implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String descricao;
+
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
 
     public MarcaProduto() {
 
@@ -37,11 +43,20 @@ public class MarcaProduto implements Serializable {
         this.descricao = descricao;
     }
 
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
+
     @Override
     public String toString() {
         return "MarcaProduto{" +
                 "id=" + id +
                 ", descricao='" + descricao + '\'' +
+                ", empresa=" + empresa +
                 '}';
     }
 

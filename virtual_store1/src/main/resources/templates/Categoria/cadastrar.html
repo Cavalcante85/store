@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Cadastrar Categoria')}">
+<body>
+<div th:replace="~{fragments/header :: content}"></div>
+
+<div class="container mt-4">
+    <h2>Nova Categoria</h2>
+
+    <form th:action="@{/categoria/salvar}" method="post" class="mt-4">
+        <input type="hidden" name="id" th:value="${categoria.id}">
+
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição:</label>
+            <input type="text" class="form-control" id="descricao" name="descricao"
+                   th:value="${categoria.descricao}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="empresaId" class="form-label">Empresa:</label>
+            <select class="form-control" id="empresaId" name="empresaId" required>
+                <option value="">Selecione uma empresa</option>
+                <!-- ESTA PARTE É CRUCIAL - POPULA O SELECT -->
+                <option th:each="empresa : ${empresas}"
+                        th:value="${empresa.id}"
+                        th:text="${empresa.nome}">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Salvar
+        </button>
+        <a th:href="@{/categorias}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

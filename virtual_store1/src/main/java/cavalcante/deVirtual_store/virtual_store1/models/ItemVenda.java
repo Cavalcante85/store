@@ -1,5 +1,6 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -23,6 +24,11 @@ public class ItemVenda implements Serializable {
     @ManyToOne(targetEntity = VendaCompraLoja.class)
     @JoinColumn(name = "venda_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name="venda_fk"))
     private VendaCompraLoja venda;
+
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
 
 
      public ItemVenda() {
@@ -61,6 +67,14 @@ public class ItemVenda implements Serializable {
         this.venda = venda;
     }
 
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
+
     @Override
     public String toString() {
         return "ItemVenda{" +
@@ -68,6 +82,7 @@ public class ItemVenda implements Serializable {
                 ", quantidade=" + quantidade +
                 ", produto=" + produto +
                 ", venda=" + venda +
+                ", empresa=" + empresa +
                 '}';
     }
 

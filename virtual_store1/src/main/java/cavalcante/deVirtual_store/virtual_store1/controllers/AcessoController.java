@@ -25,10 +25,18 @@ public class AcessoController {
     @ResponseBody
     @PostMapping(value ="/salvarAcesso")
     public ResponseEntity <Acesso> salvarAcesso(@RequestBody Acesso acesso) {
+        if (acesso.getId() == null) {
+            List<Acesso> acessos = acessoRepository.buscarAcessoDesc(acesso.getDescricao().toUpperCase());
+            if(!acessos.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe acesso com essa descrição!");
+            }
+        }
 
         Acesso acessoSalvo = acessoService.save(acesso);
 
         return new ResponseEntity<Acesso>(acessoSalvo, HttpStatus.OK);
+
+
     }
 
 
@@ -56,7 +64,7 @@ public class AcessoController {
     @GetMapping(value ="/retornoAcessoPorId/{id}")
     public ResponseEntity<Acesso> retornoAcessoPorId(@PathVariable("id") Long id) {
         Acesso acesso = acessoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Acesso não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Acesso não encontrado : "+id));
 
         return new ResponseEntity<>(acesso, HttpStatus.OK);
     }

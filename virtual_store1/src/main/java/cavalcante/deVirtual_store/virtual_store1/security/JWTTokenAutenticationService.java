@@ -39,7 +39,7 @@ public class JWTTokenAutenticationService {
    // Gera o TOKEN
    public void addAuthentication(HttpServletResponse response, String username) throws Exception{
 
-       System.out.println("TESTANDO TOKEN");
+       System.out.println("*******************     TESTANDO TOKEN  ************************");
 
        String JWT = Jwts.builder()
                .setSubject(username)

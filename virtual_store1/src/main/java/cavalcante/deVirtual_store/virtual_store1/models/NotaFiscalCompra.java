@@ -1,5 +1,6 @@
 package cavalcante.deVirtual_store.virtual_store1.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -34,6 +35,11 @@ public class NotaFiscalCompra implements Serializable {
     @ManyToOne
     @JoinColumn(name = "conta_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "conta_fk"))
     private ContaPagar contaPagar;
+
+    @Nullable
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
+    private Pessoa empresa;
 
 
     public NotaFiscalCompra() {
@@ -120,10 +126,17 @@ public class NotaFiscalCompra implements Serializable {
         this.contaPagar = contaPagar;
     }
 
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
 
     @Override
     public String toString() {
-        return "NotaFicalCompra{" +
+        return "NotaFiscalCompra{" +
                 "id=" + id +
                 ", numero='" + numero + '\'' +
                 ", serie='" + serie + '\'' +
@@ -134,6 +147,7 @@ public class NotaFiscalCompra implements Serializable {
                 ", dtCompra=" + dtCompra +
                 ", pessoa=" + pessoa +
                 ", contaPagar=" + contaPagar +
+                ", empresa=" + empresa +
                 '}';
     }
 

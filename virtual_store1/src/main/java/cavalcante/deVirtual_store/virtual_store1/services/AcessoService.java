@@ -12,6 +12,7 @@ public class AcessoService {
    private AcessoRepository acessoRepository;
 
     public AcessoService(AcessoRepository acessoRepository) {
+
         this.acessoRepository = acessoRepository;
     }
 
