@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Endereço</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/endereco/criterio}">Endereços</a></li>
+            <li class="breadcrumb-item active">Visualizar Endereço</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-map-marker-alt"></i>
+            Detalhes do Endereço
+        </h2>
+        <div>
+            <a th:href="@{/endereco/editar/{id}(id=${endereco.id})}" class="btn btn-warning me-2">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a th:href="@{/endereco/excluir/{id}(id=${endereco.id})}"
+               class="btn btn-danger me-2"
+               onclick="return confirm('Tem certeza que deseja excluir este endereço?')">
+                <i class="fas fa-trash"></i> Excluir
+            </a>
+            <a th:href="@{/endereco/criterio}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informações do Endereço</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">ID:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.id}">1</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Tipo de Endereço:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.tipo}">Residencial</p>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                    <label class="form-label fw-bold">Logradouro:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.logradouro}">Rua Exemplo</p>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Número:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.numero}">123</p>
+                </div>
+
+                <div class="col-md-12 mb-3" th:if="${endereco.complemento != null and !endereco.complemento.isEmpty()}">
+                    <label class="form-label fw-bold">Complemento:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.complemento}">Apto 45</p>
+                </div>
+
+                <div class="col-md-5 mb-3">
+                    <label class="form-label fw-bold">Bairro:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.bairro}">Centro</p>
+                </div>
+
+                <div class="col-md-5 mb-3">
+                    <label class="form-label fw-bold">Cidade:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.cidade}">São Paulo</p>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <label class="form-label fw-bold">UF:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.uf}">SP</p>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">CEP:</label>
+                    <p class="form-control-plaintext" th:text="${endereco.cep}">01234-567</p>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                    <label class="form-label fw-bold">Vinculado a:</label>
+                    <p class="form-control-plaintext">
+                        <span th:if="${endereco.pessoa != null}">
+                            <i class="fas fa-user text-info"></i>
+                            <span th:text="${endereco.pessoa.nome}">João Silva</span>
+                            <span th:if="${endereco.pessoa.cpf != null}" th:text="'(' + ${endereco.pessoa.cpf} + ')'">(000.000.000-00)</span>
+                        </span>
+                        <span th:if="${endereco.empresa != null}">
+                            <i class="fas fa-building text-success"></i>
+                            <span th:text="${endereco.empresa.nomeFantasia ?: endereco.empresa.nome}">Empresa XYZ</span>
+                            <span th:if="${endereco.empresa.cnpj != null}" th:text="'(' + ${endereco.empresa.cnpj} + ')'">(00.000.000/0000-00)</span>
+                        </span>
+                        <span th:if="${endereco.pessoa == null and endereco.empresa == null}">
+                            <i class="fas fa-exclamation-triangle text-warning"></i> Não vinculado
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>

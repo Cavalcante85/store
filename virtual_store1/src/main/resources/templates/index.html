@@ -2,22 +2,263 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Virtual Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Store - Home</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <style>
+        .card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .card {
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-<h1>Hub de Cadastro</h1>
-<p>Links Abaixo para cadastro!.</p>
 
-<ul>
-    <li><a href="/virtual_store1/Empresas">Nova Empresa</a></li>
-    <li><a href="/virtual_store1/categoria/cadastrar">Nova Categoria</a></li>
-</ul>
+<!-- MENU -->
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
 
-<p>Listas!.</p>
-<ul>
-    <li><a href="/virtual_store1/categorias">Categorias</a></li>
-</ul>
+<div class="container mt-5">
+    <!-- TÍTULO PRINCIPAL -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-store text-primary"></i>
+                Virtual Store
+            </h1>
+            <p class="lead text-muted">
+                Sistema de gerenciamento Empresarial
+            </p>
+            <hr class="my-4">
+        </div>
+    </div>
 
+    <!-- CARDS DE ACESSO RÁPIDO - AGORA COM 5 CARDS -->
+    <div class="row g-4">
+        <!-- CARD DE CATEGORIAS -->
+        <div class="col-md-2-4 mb-4" style="flex: 0 0 auto; width: 20%;">
+            <div class="card border-primary shadow">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="mb-0">
+                        <i class="fas fa-tags"></i> Categorias
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a th:href="@{/categoria/cadastrar}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-success me-2"></i>
+                            Nova Categoria
+                        </a>
+                        <a th:href="@{/categoria/criterio}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-search text-info me-2"></i>
+                            Buscar Categorias
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- CARD DE EMPRESAS -->
+        <div class="col-md-2-4 mb-4" style="flex: 0 0 auto; width: 20%;">
+            <div class="card border-success shadow">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <h3 class="mb-0">
+                        <i class="fas fa-building"></i> Empresas
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a th:href="@{/empresa/cadastrar}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-success me-2"></i>
+                            Nova Empresa
+                        </a>
+                        <a th:href="@{/empresa/criterio}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-search text-info me-2"></i>
+                            Buscar Empresas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE PESSOAS FÍSICAS -->
+        <div class="col-md-2-4 mb-4" style="flex: 0 0 auto; width: 20%;">
+            <div class="card border-info shadow">
+                <div class="card-header bg-info text-white text-center py-3">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user"></i> Pessoas Físicas
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a th:href="@{/pessoa-fisica/cadastrar}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-success me-2"></i>
+                            Nova Pessoa
+                        </a>
+                        <a th:href="@{/pessoa-fisica/criterio}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-search text-info me-2"></i>
+                            Buscar Pessoas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE ENDEREÇOS -->
+        <div class="col-md-2-4 mb-4" style="flex: 0 0 auto; width: 20%;">
+            <div class="card border-warning shadow">
+                <div class="card-header bg-warning text-dark text-center py-3">
+                    <h3 class="mb-0">
+                        <i class="fas fa-map-marker-alt"></i> Endereços
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a th:href="@{/endereco/cadastrar}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-success me-2"></i>
+                            Novo Endereço
+                        </a>
+                        <a th:href="@{/endereco/criterio}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-search text-info me-2"></i>
+                            Buscar Endereços
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE CONTAS A PAGAR (NOVO) -->
+        <div class="col-md-2-4 mb-4" style="flex: 0 0 auto; width: 20%;">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white text-center py-3">
+                    <h3 class="mb-0">
+                        <i class="fas fa-file-invoice-dollar"></i> Contas a Pagar
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a th:href="@{/contas/cadastrar}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-success me-2"></i>
+                            Nova Conta
+                        </a>
+                        <a th:href="@{/contas/criterio}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-search text-info me-2"></i>
+                            Buscar Contas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÍCONES DE ACESSO RÁPIDO -->
+    <div class="row mt-5 text-center">
+        <div class="col-12">
+            <h4 class="text-muted mb-4">Acessos Rápidos</h4>
+        </div>
+
+        <!-- Categorias -->
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/categoria/cadastrar}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-plus-circle fa-2x text-success mb-2"></i>
+                    <p class="mb-0 small">Nova Categoria</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/categoria/criterio}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-search fa-2x text-info mb-2"></i>
+                    <p class="mb-0 small">Buscar Categorias</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Empresas -->
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/empresa/cadastrar}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-plus-circle fa-2x text-success mb-2"></i>
+                    <p class="mb-0 small">Nova Empresa</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/empresa/criterio}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-search fa-2x text-info mb-2"></i>
+                    <p class="mb-0 small">Buscar Empresas</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Pessoas Físicas -->
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/pessoa-fisica/cadastrar}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-plus-circle fa-2x text-success mb-2"></i>
+                    <p class="mb-0 small">Nova Pessoa</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/pessoa-fisica/criterio}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-search fa-2x text-info mb-2"></i>
+                    <p class="mb-0 small">Buscar Pessoas</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Endereços -->
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/endereco/cadastrar}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-plus-circle fa-2x text-success mb-2"></i>
+                    <p class="mb-0 small">Novo Endereço</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/endereco/criterio}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-search fa-2x text-info mb-2"></i>
+                    <p class="mb-0 small">Buscar Endereços</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Contas a Pagar (NOVO) -->
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/contas/cadastrar}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-plus-circle fa-2x text-success mb-2"></i>
+                    <p class="mb-0 small">Nova Conta</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <a th:href="@{/contas/criterio}" class="text-decoration-none">
+                <div class="p-3 border rounded bg-light">
+                    <i class="fas fa-search fa-2x text-info mb-2"></i>
+                    <p class="mb-0 small">Buscar Contas</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<!-- Scripts -->
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 </body>
 </html>

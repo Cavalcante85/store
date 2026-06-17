@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Categoria</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/categoria/criterio}">Categorias</a></li>
+            <li class="breadcrumb-item active">Visualizar</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-tag"></i>
+            Detalhes da Categoria
+        </h2>
+        <div>
+            <a th:href="@{/categoria/editar/{id}(id=${categoria.id})}" class="btn btn-warning me-2">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a th:href="@{/categoria/excluir/{id}(id=${categoria.id})}"
+               class="btn btn-danger me-2"
+               onclick="return confirm('Tem certeza que deseja excluir esta categoria?')">
+                <i class="fas fa-trash"></i> Excluir
+            </a>
+            <a th:href="@{/categoria/criterio}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informações</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">ID:</label>
+                    <p class="form-control-plaintext" th:text="${categoria.id}">1</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Descrição:</label>
+                    <p class="form-control-plaintext" th:text="${categoria.descricao}">Categoria</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Empresa:</label>
+                    <p class="form-control-plaintext" th:text="${categoria.empresa?.nomeFantasia ?: categoria.empresa?.nome}">Empresa</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>

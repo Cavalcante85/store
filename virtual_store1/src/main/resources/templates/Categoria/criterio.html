@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Categorias</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+<body>
+
+<!-- MENU -->
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item active">Buscar Categorias</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-search"></i>
+            Buscar Categorias
+        </h2>
+        <div>
+            <!-- BOTÃO NOVA CATEGORIA -->
+            <a th:href="@{/categoria/cadastrar}" class="btn btn-success me-2">
+                <i class="fas fa-plus"></i> Nova Categoria
+            </a>
+            <a th:href="@{/categorias}" class="btn btn-primary">
+                <i class="fas fa-list"></i> Ver Lista Completa
+            </a>
+        </div>
+    </div>
+
+    <!-- FORMULÁRIO DE BUSCA -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-filter"></i> Critérios de Busca</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/categoria/pesquisar}" method="post" class="row g-3">
+
+                <div class="col-md-3">
+                    <label for="id" class="form-label">ID da Categoria:</label>
+                    <input type="number" class="form-control" id="id" name="id"
+                           placeholder="Ex: 1, 2, 3...">
+                </div>
+
+                <div class="col-md-5">
+                    <label for="descricao" class="form-label">Descrição:</label>
+                    <input type="text" class="form-control" id="descricao" name="descricao"
+                           placeholder="Digite parte da descrição">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="empresaId" class="form-label">Empresa:</label>
+                    <select class="form-control" id="empresaId" name="empresaId">
+                        <option value="">Todas as empresas</option>
+                        <option th:each="empresa : ${empresas}"
+                                th:value="${empresa.id}"
+                                th:text="${empresa.nomeFantasia ?: empresa.nome}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Pesquisar
+                    </button>
+                    <a th:href="@{/categoria/criterio}" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RESULTADOS DA BUSCA -->
+    <div class="card shadow-sm" th:if="${resultados != null and !resultados.isEmpty()}">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i>
+                Resultados Encontrados: <span th:text="${resultados.size()}"></span>
+            </h5>
+            <!-- BOTÃO NOVA CATEGORIA NO CABEÇALHO DOS RESULTADOS -->
+            <a th:href="@{/categoria/cadastrar}" class="btn btn-light btn-sm">
+                <i class="fas fa-plus"></i> Nova Categoria
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Empresa</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="categoria : ${resultados}">
+                        <td th:text="${categoria.id}">1</td>
+                        <td th:text="${categoria.descricao}">Categoria</td>
+                        <td th:text="${categoria.empresa?.nomeFantasia ?: categoria.empresa?.nome}">Empresa</td>
+                        <td>
+
+                            <!-- GRUPO DE BOTÕES DE AÇÃO -->
+                            <div class="btn-group" role="group">
+                                <!-- Botão Visualizar -->
+                                <a th:href="@{/categoria/entidade/{id}(id=${categoria.id})}"
+                                   class="btn btn-sm btn-info" title="Visualizar">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <!-- Botão Editar -->
+                                <a th:href="@{/categoria/editar/{id}(id=${categoria.id})}"
+                                   class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Botão Excluir -->
+                                <a th:href="@{/categoria/excluir/{id}(id=${categoria.id})}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Tem certeza que deseja excluir esta categoria?')"
+                                   title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+
+
+
+
+
+
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENSAGEM QUANDO NÃO ENCONTRA RESULTADOS -->
+    <div class="alert alert-info" th:if="${resultados != null and resultados.isEmpty()}">
+        <i class="fas fa-info-circle"></i>
+        Nenhuma categoria encontrada com os critérios informados.
+        <a th:href="@{/categoria/cadastrar}" class="alert-link">Clique aqui para cadastrar uma nova categoria</a>.
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<!-- Scripts -->
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>

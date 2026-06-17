@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${endereco.id == null} ? 'Novo Endereço' : 'Editar Endereço'">Cadastrar Endereço</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/endereco}">Endereços</a></li>
+            <li class="breadcrumb-item active" th:text="${endereco.id == null} ? 'Novo' : 'Editar'"></li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas" th:class="${endereco.id == null} ? 'fa-map-marker-alt' : 'fa-edit'"></i>
+            <span th:text="${endereco.id == null} ? 'Novo Endereço' : 'Editar Endereço'"></span>
+        </h2>
+
+        <a th:href="@{/endereco}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Voltar para Lista
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-map-marker-alt"></i>
+                Dados do Endereço
+            </h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/endereco/salvar}" method="post">
+                <input type="hidden" name="id" th:value="${endereco.id}" />
+
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="logradouro" class="form-label">Logradouro:</label>
+                        <input type="text" class="form-control" id="logradouro" name="logradouro"
+                               th:value="${endereco.logradouro}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="numero" class="form-label">Número:</label>
+                        <input type="text" class="form-control" id="numero" name="numero"
+                               th:value="${endereco.numero}" required>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="complemento" class="form-label">Complemento:</label>
+                        <input type="text" class="form-control" id="complemento" name="complemento"
+                               th:value="${endereco.complemento}">
+                    </div>
+
+                    <div class="col-md-5">
+                        <label for="bairro" class="form-label">Bairro:</label>
+                        <input type="text" class="form-control" id="bairro" name="bairro"
+                               th:value="${endereco.bairro}" required>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label for="cidade" class="form-label">Cidade:</label>
+                        <input type="text" class="form-control" id="cidade" name="cidade"
+                               th:value="${endereco.cidade}" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="uf" class="form-label">UF:</label>
+                        <input type="text" class="form-control" id="uf" name="uf" maxlength="2"
+                               th:value="${endereco.uf}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="cep" class="form-label">CEP:</label>
+                        <input type="text" class="form-control" id="cep" name="cep"
+                               th:value="${endereco.cep}" placeholder="00000-000" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="tipo" class="form-label">Tipo de Endereço:</label>
+                        <select class="form-control" id="tipo" name="tipo" required>
+                            <option value="">Selecione</option>
+                            <option value="RESIDENCIAL">Residencial</option>
+                            <option value="COMERCIAL">Comercial</option>
+                            <option value="COBRANCA">Cobrança</option>
+                            <option value="ENTREGA">Entrega</option>
+                            <option value="OUTROS">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="pessoaId" class="form-label">Pessoa Física:</label>
+                        <select class="form-control" id="pessoaId" name="pessoaId">
+                            <option value="">Selecione (opcional)</option>
+                            <option th:each="pessoa : ${pessoasFisicas}"
+                                    th:value="${pessoa.id}"
+                                    th:text="${pessoa.nome} + ' - ' + ${pessoa.cpf}"
+                                    th:selected="${endereco.pessoa?.id == pessoa.id}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="empresaId" class="form-label">Empresa:</label>
+                        <select class="form-control" id="empresaId" name="empresaId">
+                            <option value="">Selecione (opcional)</option>
+                            <option th:each="empresa : ${pessoasJuridicas}"
+                                    th:value="${empresa.id}"
+                                    th:text="${empresa.nomeFantasia} + ' - ' + ${empresa.cnpj}"
+                                    th:selected="${endereco.empresa?.id == empresa.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <a th:href="@{/endereco}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>

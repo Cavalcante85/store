@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Conta a Pagar</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <style>
+        .form-group-required .form-label:after {
+            content: " *";
+            color: red;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/contas/criterio}">Contas a Pagar</a></li>
+            <li class="breadcrumb-item active" th:text="${contaPagar.id != null && contaPagar.id > 0 ? 'Editar Conta' : 'Nova Conta'}">Nova Conta</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-file-invoice-dollar text-danger"></i>
+            <span th:text="${contaPagar.id != null && contaPagar.id > 0 ? 'Editar Conta a Pagar' : 'Nova Conta a Pagar'}">Nova Conta a Pagar</span>
+        </h2>
+        <a th:href="@{/contas/criterio}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <div class="card shadow-sm">
+        <div class="card-header text-white">
+            <h5 class="mb-0"><i class="fas fa-edit"></i> Dados da Conta</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/contas/salvar}" method="post" class="row g-3">
+                <input type="hidden" name="id" th:value="${contaPagar.id}">
+
+                <!-- DESCRIÇÃO -->
+                <div class="col-12 form-group-required">
+                    <label for="descricao" class="form-label">Descrição:</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="2" required th:text="${contaPagar.descricao}"></textarea>
+                </div>
+
+                <!-- VALOR TOTAL -->
+                <div class="col-md-4 form-group-required">
+                    <label for="valorTotal" class="form-label">Valor Total (R$):</label>
+                    <input type="number" step="0.01" class="form-control" id="valorTotal" name="valorTotal"
+                           th:value="${contaPagar.valorTotal}" required>
+                </div>
+
+                <!-- DATA VENCIMENTO -->
+                <div class="col-md-4 form-group-required">
+                    <label for="dtVencimento" class="form-label">Data Vencimento:</label>
+                    <input type="date" class="form-control" id="dtVencimento" name="dtVencimento"
+                           th:value="${#dates.format(contaPagar.dtVencimento, 'yyyy-MM-dd')}" required>
+                </div>
+
+                <!-- DATA PAGAMENTO -->
+                <div class="col-md-4">
+                    <label for="dtPagamento" class="form-label">Data Pagamento:</label>
+                    <input type="date" class="form-control" id="dtPagamento" name="dtPagamento"
+                           th:value="${#dates.format(contaPagar.dtPagamento, 'yyyy-MM-dd')}">
+                </div>
+
+                <!-- STATUS - usando os valores do Enum -->
+                <div class="col-md-4 form-group-required">
+                    <label for="status" class="form-label">Status:</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="">Selecione...</option>
+                        <option th:each="statusItem : ${statusList}"
+                                th:value="${statusItem.name()}"
+                                th:text="${statusItem.getDescricao()}"
+                                th:selected="${contaPagar.status != null && contaPagar.status.name() == statusItem.name()}">
+                        </option>
+                    </select>
+                </div>
+
+                <!-- PESSOA (quem está pagando) -->
+                <div class="col-md-6 form-group-required">
+                    <label for="pessoaId" class="form-label">Pessoa (Pagador):</label>
+                    <select class="form-select" id="pessoaId" name="pessoaId" required>
+                        <option value="">Selecione...</option>
+                        <optgroup label="Pessoas Físicas">
+                            <option th:each="pessoa : ${pessoasFisicas}"
+                                    th:value="${pessoa.id}"
+                                    th:text="${pessoa.nome} + ' (CPF: ' + ${pessoa.cpf} + ')'"
+                                    th:selected="${contaPagar.pessoa != null && contaPagar.pessoa.id == pessoa.id}">
+                            </option>
+                        </optgroup>
+                        <optgroup label="Empresas">
+                            <option th:each="empresa : ${pessoasJuridicas}"
+                                    th:value="${empresa.id}"
+                                    th:text="${empresa.nomeFantasia ?: empresa.nome} + ' (CNPJ: ' + ${empresa.cnpj} + ')'"
+                                    th:selected="${contaPagar.pessoa != null && contaPagar.pessoa.id == empresa.id}">
+                            </option>
+                        </optgroup>
+                    </select>
+                    <small class="form-text text-muted">Quem está realizando o pagamento</small>
+                </div>
+
+                <!-- FORNECEDOR -->
+                <div class="col-md-6 form-group-required">
+                    <label for="pessoaFornecedorId" class="form-label">Fornecedor:</label>
+                    <select class="form-select" id="pessoaFornecedorId" name="pessoaFornecedorId" required>
+                        <option value="">Selecione...</option>
+                        <optgroup label="Pessoas Físicas">
+                            <option th:each="pessoa : ${pessoasFisicas}"
+                                    th:value="${pessoa.id}"
+                                    th:text="${pessoa.nome} + ' (CPF: ' + ${pessoa.cpf} + ')'"
+                                    th:selected="${contaPagar.pessoa_fornecedor != null && contaPagar.pessoa_fornecedor.id == pessoa.id}">
+                            </option>
+                        </optgroup>
+                        <optgroup label="Empresas">
+                            <option th:each="empresa : ${pessoasJuridicas}"
+                                    th:value="${empresa.id}"
+                                    th:text="${empresa.nomeFantasia ?: empresa.nome} + ' (CNPJ: ' + ${empresa.cnpj} + ')'"
+                                    th:selected="${contaPagar.pessoa_fornecedor != null && contaPagar.pessoa_fornecedor.id == empresa.id}">
+                            </option>
+                        </optgroup>
+                    </select>
+                    <small class="form-text text-muted">Para quem a conta deve ser paga</small>
+                </div>
+
+                <!-- EMPRESA -->
+                <div class="col-md-12 form-group-required">
+                    <label for="empresaId" class="form-label">Empresa (Filial):</label>
+                    <select class="form-select" id="empresaId" name="empresaId" required>
+                        <option value="">Selecione...</option>
+                        <option th:each="empresa : ${empresas}"
+                                th:value="${empresa.id}"
+                                th:text="${empresa.nomeFantasia ?: empresa.nome} + ' (CNPJ: ' + ${empresa.cnpj} + ')'"
+                                th:selected="${contaPagar.empresa != null && contaPagar.empresa.id == empresa.id}">
+                        </option>
+                    </select>
+                    <small class="form-text text-muted">Empresa responsável pela conta</small>
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <a th:href="@{/contas/criterio}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>

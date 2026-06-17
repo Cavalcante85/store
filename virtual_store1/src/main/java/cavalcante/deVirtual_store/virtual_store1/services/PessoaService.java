@@ -189,7 +189,7 @@ public class PessoaService {
     }
 
     public List<PessoaJuridica> consultaCnpj(String cnpj) {
-        return pessoaJuridicaRepository.findByCnpj(cnpj);
+        return pessoaJuridicaRepository.findByCnpjContaining(cnpj);
 
     }
 

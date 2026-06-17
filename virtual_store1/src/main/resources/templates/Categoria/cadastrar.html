@@ -1,42 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: header('Cadastrar Categoria')}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${categoria.id == null} ? 'Nova Categoria' : 'Editar Categoria'">Cadastrar Categoria</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
 <body>
-<div th:replace="~{fragments/header :: content}"></div>
+g
+<!-- MENU -->
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
 
 <div class="container mt-4">
-    <h2>Nova Categoria</h2>
 
-    <form th:action="@{/categoria/salvar}" method="post" class="mt-4">
-        <input type="hidden" name="id" th:value="${categoria.id}">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/categorias}">Categorias</a></li>
+            <li class="breadcrumb-item active" th:text="${categoria.id == null} ? 'Nova' : 'Editar'"></li>
+        </ol>
+    </nav>
 
-        <div class="mb-3">
-            <label for="descricao" class="form-label">Descrição:</label>
-            <input type="text" class="form-control" id="descricao" name="descricao"
-                   th:value="${categoria.descricao}" required>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas" th:class="${categoria.id == null} ? 'fa-plus' : 'fa-edit'"></i>
+            <span th:text="${categoria.id == null} ? 'Nova Categoria' : 'Editar Categoria'"></span>
+        </h2>
 
-        <div class="mb-3">
-            <label for="empresaId" class="form-label">Empresa:</label>
-            <select class="form-control" id="empresaId" name="empresaId" required>
-                <option value="">Selecione uma empresa</option>
-                <!-- ESTA PARTE É CRUCIAL - POPULA O SELECT -->
-                <option th:each="empresa : ${empresas}"
-                        th:value="${empresa.id}"
-                        th:text="${empresa.nome}">
-                </option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-success">
-            <i class="fas fa-save"></i> Salvar
-        </button>
-        <a th:href="@{/categorias}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Voltar
+        <!-- Botão Voltar para Lista -->
+        <a th:href="@{/categorias}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Voltar para Lista
         </a>
-    </form>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form th:action="@{/categoria/salvar}" method="post">
+                <input type="hidden" name="id" th:value="${categoria.id}" />
+
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição:</label>
+                    <input type="text"
+                           class="form-control"
+                           id="descricao"
+                           name="descricao"
+                           th:value="${categoria.descricao}"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="empresaId" class="form-label">Empresa:</label>
+                    <select class="form-control"
+                            id="empresaId"
+                            name="empresaId"
+                            required>
+                        <option value="">Selecione uma empresa</option>
+                        <option th:each="empresa : ${empresas}"
+                                th:value="${empresa.id}"
+                                th:text="${empresa.nomeFantasia ?: empresa.nome}"
+                                th:selected="${categoria.empresa?.id == empresa.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <a th:href="@{/categorias}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<!-- Scripts -->
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 </body>
 </html>

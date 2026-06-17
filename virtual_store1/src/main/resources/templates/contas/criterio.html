@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Contas a Pagar</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <style>
+        .status-pendente { background-color: #ffc107; color: #000; }
+        .status-pago { background-color: #28a745; color: #fff; }
+        .status-vencido { background-color: #dc3545; color: #fff; }
+        .badge-status { padding: 5px 12px; border-radius: 20px; font-size: 0.8em; display: inline-block; }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,123,255,0.05);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item active">Buscar Contas a Pagar</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-search text-danger"></i>
+            Buscar Contas a Pagar
+        </h2>
+        <div>
+            <a th:href="@{/contas/cadastrar}" class="btn btn-success me-2">
+                <i class="fas fa-plus"></i> Nova Conta
+            </a>
+            <a th:href="@{/contas}" class="btn btn-primary">
+                <i class="fas fa-list"></i> Ver Lista Completa
+            </a>
+        </div>
+    </div>
+
+    <!-- MENSAGEM DE FEEDBACK -->
+    <div th:if="${mensagem}" th:class="'alert alert-' + ${tipoMensagem} + ' alert-dismissible fade show'" role="alert">
+        <i th:class="${tipoMensagem == 'success'} ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle'"></i>
+        <span th:text="${mensagem}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- FORMULÁRIO DE BUSCA -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h5 class="mb-0"><i class="fas fa-filter"></i> Critérios de Busca</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/contas/pesquisar}" method="post" class="row g-3">
+                <div class="col-md-3">
+                    <label for="id" class="form-label">ID:</label>
+                    <input type="number" class="form-control" id="id" name="id" placeholder="Número da conta">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="descricao" class="form-label">Descrição:</label>
+                    <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Digite a descrição">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Status:</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">Todos</option>
+                        <option th:each="statusItem : ${statusList}"
+                                th:value="${statusItem}"
+                                th:text="${statusItem}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Pesquisar
+                    </button>
+                    <a th:href="@{/contas/criterio}" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RESULTADOS DA BUSCA -->
+    <div class="card shadow-sm" th:if="${resultados != null and !resultados.isEmpty()}">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i>
+                Resultados Encontrados: <span th:text="${resultados.size()}"></span>
+            </h5>
+            <a th:href="@{/contas/cadastrar}" class="btn btn-light btn-sm">
+                <i class="fas fa-plus"></i> Nova Conta
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Valor Total</th>
+                        <th>Vencimento</th>
+                        <th>Pagamento</th>
+                        <th>Status</th>
+                        <th>Pagador</th>
+                        <th>Fornecedor</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="conta : ${resultados}">
+                        <td th:text="${conta.id}">1</td>
+                        <td th:text="${conta.descricao}">Descrição</td>
+                        <td th:text="'R$ ' + ${#numbers.formatDecimal(conta.valorTotal, 1, 2)}">R$ 0,00</td>
+                        <td th:text="${#dates.format(conta.dtVencimento, 'dd/MM/yyyy')}">00/00/0000</td>
+                        <td th:text="${conta.dtPagamento != null ? #dates.format(conta.dtPagamento, 'dd/MM/yyyy') : '-'}">00/00/0000</td>
+                        <td>
+                                <span th:if="${conta.status.name() == 'ABERTA'}" class="badge-status status-pendente">
+                                    <i class="fas fa-hourglass-half"></i> Pendente
+                                </span>
+                            <span th:if="${conta.status.name() == 'PAGA'}" class="badge-status status-pago">
+                                    <i class="fas fa-check-circle"></i> Paga
+                                </span>
+                            <span th:if="${conta.status.name() == 'VENCIDA'}" class="badge-status status-vencido">
+                                    <i class="fas fa-exclamation-triangle"></i> Vencida
+                                </span>
+                            <span th:if="${conta.status.name() == 'QUITADA'}" class="badge-status status-pago">
+                                    <i class="fas fa-exclamation-triangle"></i> Paga
+                                </span>
+                        </td>
+                        <td th:text="${conta.pessoa != null ? conta.pessoa.nome : '-'}">Pagador</td>
+                        <td th:text="${conta.pessoa_fornecedor != null ? conta.pessoa_fornecedor.nome : '-'}">Fornecedor</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/contas/entidade/{id}(id=${conta.id})}"
+                                   class="btn btn-sm btn-info" title="Visualizar">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a th:href="@{/contas/editar/{id}(id=${conta.id})}"
+                                   class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{/contas/excluir/{id}(id=${conta.id})}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Tem certeza que deseja excluir esta conta?')"
+                                   title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENSAGEM QUANDO NÃO ENCONTRA RESULTADOS -->
+    <div class="alert alert-info" th:if="${resultados != null and resultados.isEmpty()}">
+        <i class="fas fa-info-circle"></i>
+        Nenhuma conta encontrada com os critérios informados.
+        <a th:href="@{/contas/cadastrar}" class="alert-link">Clique aqui para cadastrar uma nova conta</a>.
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>

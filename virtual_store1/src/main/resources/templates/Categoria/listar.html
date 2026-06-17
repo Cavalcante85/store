@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: header('Lista de Categorias')}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Categorias</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
 <body>
-<!-- REMOVA O th:replace daqui - NÃO use replace no conteúdo -->
-<div th:replace="~{fragments/header :: content}"></div>
 
-<!-- TODO O CONTEÚDO DEVE ESTAR FORA DO div DO FRAGMENTO -->
+<!-- MENU -->
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
 <div class="container mt-4">
-    <h2>Lista de Categorias</h2>
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item active">Categorias</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-tags"></i>
+            Lista de Categorias
+        </h2>
+
+        <!-- Botão Voltar para Home -->
+        <a th:href="@{/}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Voltar para Home
+        </a>
+    </div>
 
     <div th:if="${mensagem}" class="alert alert-dismissible fade show"
          th:classappend="'alert-' + ${tipoMensagem}" role="alert">
@@ -16,7 +41,7 @@
     </div>
 
     <div class="mb-3">
-        <a th:href="@{/categoria/cadastrar}" class="btn btn-primary">
+        <a th:href="@{/categoria/cadastrar}" class="btn btn-success">
             <i class="fas fa-plus"></i> Nova Categoria
         </a>
     </div>
@@ -53,6 +78,11 @@
     </div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<!-- Scripts -->
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 </body>
 </html>

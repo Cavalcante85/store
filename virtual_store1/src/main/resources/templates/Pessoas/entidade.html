@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Pessoa</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/menu_simples :: menu}"></div>
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/pessoa-fisica/criterio}">Pessoas Físicas</a></li>
+            <li class="breadcrumb-item active">Visualizar</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-user"></i>
+            Detalhes da Pessoa
+        </h2>
+        <div>
+            <a th:href="@{/pessoa-fisica/editar/{id}(id=${pessoa.id})}" class="btn btn-warning me-2">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a th:href="@{/pessoa-fisica/excluir/{id}(id=${pessoa.id})}"
+               class="btn btn-danger me-2"
+               onclick="return confirm('Tem certeza que deseja excluir esta pessoa?')">
+                <i class="fas fa-trash"></i> Excluir
+            </a>
+            <a th:href="@{/pessoa-fisica/criterio}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informações</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">ID:</label>
+                    <p class="form-control-plaintext" th:text="${pessoa.id}">1</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Nome Completo:</label>
+                    <p class="form-control-plaintext" th:text="${pessoa.nome}">Nome Completo</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">CPF:</label>
+                    <p class="form-control-plaintext" th:text="${pessoa.cpf}">000.000.000-00</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">E-mail:</label>
+                    <p class="form-control-plaintext" th:text="${pessoa.email}">email@email.com</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Telefone:</label>
+                    <p class="form-control-plaintext" th:text="${pessoa.telefone}">(00) 0000-0000</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Data de Nascimento:</label>
+                    <p class="form-control-plaintext" th:text="${#dates.format(pessoa.dataNascimento, 'dd/MM/yyyy')}">dd/mm/aaaa</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer_simples :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+</body>
+</html>
