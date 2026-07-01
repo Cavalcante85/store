@@ -39,6 +39,13 @@
             </h5>
         </div>
         <div class="card-body">
+
+            <div th:if="${mensagem}"
+                 th:class="'alert alert-' + ${tipoMensagem}"
+                 role="alert">
+                <span th:text="${mensagem}"></span>
+            </div>
+
             <form th:action="@{/endereco/salvar}" method="post">
                 <input type="hidden" name="id" th:value="${endereco.id}" />
 
@@ -87,6 +94,7 @@
 
                     <div class="col-md-4">
                         <label for="tipo" class="form-label">Tipo de Endereço:</label>
+                        <!--
                         <select class="form-control" id="tipo" name="tipo" required>
                             <option value="">Selecione</option>
                             <option value="RESIDENCIAL">Residencial</option>
@@ -95,6 +103,17 @@
                             <option value="ENTREGA">Entrega</option>
                             <option value="OUTROS">Outros</option>
                         </select>
+                        -->
+                        <select class="form-control" id="tipo" name="tipo" required>
+                            <option value="">Selecione</option>
+                            <option th:each="tipoEndereco : ${tiposEndereco}"
+                                    th:value="${tipoEndereco.name()}"
+                                    th:text="${tipoEndereco}"
+                                    th:selected="${endereco.tipo != null and endereco.tipo == tipoEndereco}">
+                            </option>
+                        </select>
+
+
                     </div>
 
                     <div class="col-md-4">
