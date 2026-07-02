@@ -1,4 +1,6 @@
 HELP.md
+
+### Maven / Build ###
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -14,7 +16,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -31,3 +33,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Banco / backups ###
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+backup.sql
+dump.sql
+
+### Configurações sensíveis ###
+.env
+application-dev.properties
+application-local.properties
